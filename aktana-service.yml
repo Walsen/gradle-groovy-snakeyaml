@@ -1,0 +1,72 @@
+database:
+  driverClass: net.sf.log4jdbc.DriverSpy
+  user: appadmin
+  password: 543IA##
+  url: jdbc:log4jdbc:mysql://172.21.3.26:3306/msd_v2?zeroDateTimeBehavior=convertToNull
+  properties: {hibernate.generate_statistics: true}
+http:
+  rootPath: /api/*
+  port: 8080
+  adminPort: 8081
+  maxThreads: 100
+  minThreads: 10
+  connectorType: nonblocking
+  maxIdleTime: 60s
+  acceptorThreadPriorityOffset: 0
+  acceptQueueSize: 100
+  maxBufferCount: 1024
+  requestBufferSize: 32KB
+  requestHeaderBufferSize: 6KB
+  responseBufferSize: 32KB
+  responseHeaderBufferSize: 6KB
+  reuseAddress: true
+  soLingerTime: 1s
+  lowResourcesConnectionThreshold: 25000
+  lowResourcesMaxIdleTime: 5s
+  shutdownGracePeriod: 2s
+  useForwardedHeaders: true
+  useDirectBuffers: true
+  requestLog:
+    console: {enabled: true}
+    file: {enabled: true, currentLogFilename: ./logs/requests.log, archivedLogFilenamePattern: ./logs/requests-%d.log.gz,
+      archivedFileCount: 5}
+    syslog: {enabled: false, host: localhost, facility: local0}
+logging:
+  level: INFO
+  console: {enabled: true, threshold: ALL}
+  syslog: {enabled: false, host: localhost, facility: local0}
+airbrake: {enabled: false, url: 'http://api.airbrake.io/notifier_api/v2/notices',
+  key: 42ec19cab1779c27f5d1c796cc23b9e1}
+sessions: {maxInactiveInterval: 10000, storeDirectory: ./tmp, savePeriod: 60}
+metrics: {enabled: false, host: carbon.hostedgraphite.com, port: 2003, interval: 15,
+  key: 37600450-f118-43fc-836e-7b1c287a96c5}
+paramsConfiguration: {pastSchedulePeriod: 3, futureSchedulePeriod: 3}
+memcache: {host: 172.21.3.16, port: 11211}
+customLogConfiguration:
+  file:
+    enabled: true
+    loggers: {com.aktana.service: DEBUG, ma.glasnost.orika: ERROR}
+    fileName: ./logs/server.log
+    level: INFO
+    pattern: '%-5level [%date] %thread %logger: %msg%n'
+    archivedLogFilenamePattern: ./logs/server-%d.log.gz
+    archivedFileCount: 5
+    additive: true
+  hibernate:
+    enabled: true
+    loggers: {jdbc.sqlonly: INFO}
+    fileName: ./logs/hibernate.log
+    level: INFO
+    pattern: '%-5level [%date] %thread %logger: %msg%n'
+    archivedLogFilenamePattern: ./logs/hibernate-%d.log.gz
+    archivedFileCount: 5
+    additive: true
+  se:
+    enabled: true
+    loggers: {com.aktana.suggestion: DEBUG, com.aktana.service.core.business.impl.SEServicesBo: DEBUG}
+    fileName: ./logs/se.log
+    level: INFO
+    pattern: '%-5level [%date] %thread %logger: %msg%n'
+    archivedLogFilenamePattern: ./logs/se-%d.log.gz
+    archivedFileCount: 5
+    additive: true
